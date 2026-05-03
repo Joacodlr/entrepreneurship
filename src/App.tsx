@@ -147,37 +147,37 @@ const STUDENT_REWARDS = [
 ];
 
 const PROFESSOR_REWARDS = [
-  { icon: "☕", name: "Free Coffee", pts: 150 },
-  { icon: "🚆", name: "Train Ticket (Madrid)", pts: 350 },
-  { icon: "🚌", name: "Bus Pass (Monthly)", pts: 500 },
-  { icon: "🎟️", name: "Rail Voucher €20", pts: 280 },
+  { icon: "☕", name: "Free Coffee (Campus Café)", pts: 120 },
+  { icon: "🚆", name: "Train Ticket Madrid–Segovia", pts: 320 },
+  { icon: "🚌", name: "Monthly Bus Pass", pts: 480 },
+  { icon: "🎟️", name: "Renfe Rail Voucher €20", pts: 260 },
 ];
 
 const STAFF_ALERTS = [
   {
     bin: "Recycling",
-    location: "Main Hall — Floor 1",
+    label: "Recycling bin on Floor 3 – Segovia is full",
     icon: "♻️",
     color: "#4FC3F7",
     urgent: true,
   },
   {
     bin: "Organic",
-    location: "Cafeteria East Wing",
+    label: "Organic bin on Floor 1 – IE Tower is full",
     icon: "🌿",
     color: "#66BB6A",
     urgent: true,
   },
   {
     bin: "General",
-    location: "Library — 3rd Floor",
+    label: "General bin on Floor 2 – María de Molina is full",
     icon: "🗑️",
     color: "#78909C",
-    urgent: false,
+    urgent: true,
   },
   {
     bin: "Paper",
-    location: "Admin Block — Room 204",
+    label: "Paper bin on Ground Floor – Library needs emptying",
     icon: "📄",
     color: "#FFA726",
     urgent: false,
@@ -606,32 +606,51 @@ function StaffNotificationBell() {
       </button>
       {open && (
         <div
-          className="slide-down glass-card"
+          className="slide-down"
           style={{
             position: "absolute",
             top: 50,
             right: 0,
-            width: 280,
+            width: 310,
             zIndex: 200,
-            padding: 16,
-            background: "rgba(10,24,14,0.97)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            boxShadow: "0 16px 40px rgba(0,0,0,0.6)",
+            borderRadius: 20,
+            padding: 20,
+            background: "#0E2416",
+            border: "1px solid rgba(200,255,78,0.3)",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.9)",
           }}
         >
-          <p
+          <div
             style={{
-              fontFamily: "Syne",
-              fontWeight: 700,
-              fontSize: 13,
-              marginBottom: 12,
-              color: "rgba(232,245,233,0.7)",
-              letterSpacing: "0.05em",
-              textTransform: "uppercase",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 16,
             }}
           >
-            Bin Alerts
-          </p>
+            <p
+              style={{
+                fontFamily: "Syne",
+                fontWeight: 800,
+                fontSize: 16,
+                color: "#E8F5E9",
+              }}
+            >
+              🔔 Bin Alerts
+            </p>
+            <span
+              style={{
+                fontSize: 11,
+                background: "#FF5252",
+                color: "#fff",
+                borderRadius: 6,
+                padding: "2px 8px",
+                fontWeight: 700,
+              }}
+            >
+              {STAFF_ALERTS.filter((a) => a.urgent).length} urgent
+            </span>
+          </div>
           {STAFF_ALERTS.map((a, i) => (
             <div
               key={i}
@@ -648,65 +667,68 @@ function StaffNotificationBell() {
             >
               <div
                 style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: 10,
+                  width: 42,
+                  height: 42,
+                  borderRadius: 12,
                   flexShrink: 0,
-                  background: `${a.color}22`,
-                  border: `1px solid ${a.color}55`,
+                  background: `${a.color}30`,
+                  border: `1px solid ${a.color}90`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: 18,
+                  fontSize: 22,
                 }}
               >
                 {a.icon}
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <p style={{ fontWeight: 600, fontSize: 13 }}>{a.bin} Bin</p>
-                  {a.urgent && (
-                    <span
-                      style={{
-                        fontSize: 10,
-                        background: "#FF5252",
-                        color: "#fff",
-                        borderRadius: 4,
-                        padding: "1px 5px",
-                        fontWeight: 700,
-                      }}
-                    >
-                      FULL
-                    </span>
-                  )}
-                </div>
                 <p
                   style={{
-                    fontSize: 12,
-                    color: "rgba(232,245,233,0.5)",
-                    marginTop: 2,
+                    fontWeight: 600,
+                    fontSize: 14,
+                    color: "#E8F5E9",
+                    lineHeight: 1.4,
                   }}
                 >
-                  📍 {a.location}
+                  {a.label}
                 </p>
+                {a.urgent && (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      marginTop: 5,
+                      fontSize: 11,
+                      background: "rgba(255,82,82,0.2)",
+                      color: "#FF8080",
+                      border: "1px solid rgba(255,82,82,0.4)",
+                      borderRadius: 6,
+                      padding: "2px 8px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    ⚠ Empty now
+                  </span>
+                )}
               </div>
             </div>
           ))}
           <button
             onClick={() => setOpen(false)}
             style={{
-              marginTop: 12,
+              marginTop: 14,
               width: "100%",
-              padding: "8px",
-              borderRadius: 10,
-              background: "rgba(255,255,255,0.06)",
-              border: "none",
-              color: "rgba(232,245,233,0.5)",
+              padding: "11px",
+              borderRadius: 12,
+              background: "rgba(200,255,78,0.1)",
+              border: "1px solid rgba(200,255,78,0.25)",
+              color: "#C8FF4E",
               cursor: "pointer",
-              fontSize: 12,
+              fontSize: 13,
+              fontWeight: 600,
+              fontFamily: "Syne",
             }}
           >
-            Dismiss
+            Got it ✓
           </button>
         </div>
       )}
@@ -965,11 +987,8 @@ function HomeTab({
             >
               <span style={{ fontSize: 20 }}>{a.icon}</span>
               <div style={{ flex: 1 }}>
-                <p style={{ fontWeight: 600, fontSize: 14 }}>
-                  {a.bin} Bin — FULL
-                </p>
-                <p style={{ fontSize: 12, color: "rgba(232,245,233,0.5)" }}>
-                  📍 {a.location}
+                <p style={{ fontWeight: 600, fontSize: 14, lineHeight: 1.4 }}>
+                  {a.label}
                 </p>
               </div>
               <span
